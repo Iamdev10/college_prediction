@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NIT Predictor Pro 2026</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #2563eb;
+        --bg: #f8fafc;
+        --card: #ffffff;
+        --text: #1e293b;
+        --safe: #10b981;
+        --moderate: #f59e0b;
+        --risky: #ef4444;
+        --dream: #6366f1;
+      }
+
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        font-family: "Inter", sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+        transition: all 0.5s ease;
+      }
+
+      /* INITIAL STATE: Center the form */
+      .wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        padding: 20px;
+        transition: all 0.5s ease-in-out;
+      }
+
+      .header-section {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .header-section h1 {
+        font-size: 2.5rem;
+        margin: 0;
+        letter-spacing: -1.5px;
+      }
+
+      .search-container {
+        width: 100%;
+        max-width: 600px;
+        background: white;
+        padding: 40px;
+        border-radius: 24px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        transition: all 0.5s ease;
+      }
+
+      /* POST-PREDICTION STATE: Side-by-side */
+      body.results-active .wrapper {
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-start;
+        height: 100vh;
+        padding: 0;
+      }
+
+      body.results-active .header-section {
+        display: none;
+      }
+
+      body.results-active .search-container {
+        width: 350px;
+        height: 100vh;
+        border-radius: 0;
+        padding: 30px 20px;
+        overflow-y: auto;
+        box-shadow: 4px 0 10px rgba(0, 0, 0, 0.05);
+        max-width: none;
+      }
+
+      .results-area {
+        flex: 1;
+        height: 100vh;
+        overflow-y: auto;
+        padding: 40px;
+        display: none;
+      }
+
+      body.results-active .results-area {
+        display: block;
+      }
+
+      /* UI Elements */
+      .input-group {
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #64748b;
+      }
+      input,
+      select {
+        padding: 12px;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 1rem;
+      }
+
+      button {
+        width: 100%;
+        background: var(--primary);
+        color: white;
+        padding: 16px;
+        border: none;
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+
+      .filter-section {
+        margin-top: 30px;
+        padding-top: 30px;
+        border-top: 1px solid #f1f5f9;
+      }
+
+      /* Result Cards */
+      .result-card {
+        background: white;
+        padding: 20px;
+        border-radius: 16px;
+        border-left: 6px solid #ccc;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      }
+      .result-card.status-safe {
+        border-left-color: var(--safe);
+      }
+      .result-card.status-moderate {
+        border-left-color: var(--moderate);
+      }
+      .result-card.status-risky {
+        border-left-color: var(--risky);
+      }
+      .result-card.status-dream {
+        border-left-color: var(--dream);
+      }
+
+      .status-badge {
+        padding: 4px 12px;
+        border-radius: 99px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+      .status-safe .status-badge {
+        background: #dcfce7;
+        color: #166534;
+      }
+      .status-moderate .status-badge {
+        background: #fef3c7;
+        color: #92400e;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      @media (max-width: 900px) {
+        body.results-active .wrapper {
+          flex-direction: column;
+          overflow-y: auto;
+        }
+        body.results-active .search-container {
+          width: 100%;
+          height: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="search-container">
+        <div class="header-section">
+          <h1>NIT Predictor 2026</h1>
+          <p>Analyze your JEE Main rank against historical trends</p>
+        </div>
+
+        <form id="predictionForm">
+          <div class="input-group">
+            <label>JEE Main Rank</label>
+            <input
+              type="number"
+              id="rank"
+              placeholder="Enter All India Rank"
+              required
+            />
+          </div>
+          <div class="input-group">
+            <label>Category</label>
+            <select id="category">
+              <option value="OPEN">OPEN</option>
+              <option value="OBC-NCL">OBC-NCL</option>
+              <option value="SC">SC</option>
+              <option value="ST">ST</option>
+              <option value="EWS">EWS</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Gender</label>
+            <select id="gender">
+              <option value="Gender-Neutral">Gender-Neutral</option>
+              <option value="Female-only">Female-only</option>
+            </select>
+          </div>
+          <button type="submit" id="submitBtn">Get Predictions</button>
+        </form>
+
+        <div id="postFilters" class="filter-section hidden">
+          <label
+            style="color: var(--primary); margin-bottom: 15px; display: block"
+            >Refine Results</label
+          >
+
+          <div class="input-group">
+            <label>Institute / State</label>
+            <input
+              type="text"
+              id="searchKeyword"
+              placeholder="e.g. NITW, Punjab..."
+              oninput="applyFilters()"
+            />
+          </div>
+
+          <div class="input-group">
+            <label>Branch</label>
+            <select id="filterBranch" onchange="applyFilters()">
+              <option value="All">All Branches</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label>Chance Type</label>
+            <select id="filterStatus" onchange="applyFilters()">
+              <option value="All">All Probabilities</option>
+              <option value="Safe">Safe</option>
+              <option value="Moderate">Moderate</option>
+              <option value="Risky">Risky</option>
+              <option value="Dream">Dream</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label>Sort By</label>
+            <select id="sortBy" onchange="applyFilters()">
+              <option value="nirf">NIRF Ranking</option>
+              <option value="prob">Admission Chance</option>
+              <option value="alpha">Name (A-Z)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="results-area">
+        <div
+          style="
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <h2 style="margin: 0">Recommended Options</h2>
+          <span
+            id="resultCount"
+            style="color: #64748b; font-weight: 600"
+          ></span>
+        </div>
+        <div id="resultsList"></div>
+      </div>
+    </div>
+
+    <script>
+      window.currentResults = [];
+
+      const shortcuts = {
+        nitw: "warangal",
+        nitc: "calicut",
+        nitt: "tiruchirappalli",
+        nitk: "surathkal",
+        nitr: "rourkela",
+        nitp: "patna",
+        nitjsr: "jamshedpur",
+        nitj: "jalandhar",
+        nits: "silchar",
+        mnit: "jaipur",
+        vnit: "nagpur",
+        manit: "bhopal",
+        svnit: "surat",
+      };
+
+      document
+        .getElementById("predictionForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const btn = document.getElementById("submitBtn");
+          const resultsList = document.getElementById("resultsList");
+          const filterBar = document.getElementById("postFilters");
+
+          btn.disabled = true;
+          btn.innerText = "Analyzing...";
+
+          try {
+            const response = await fetch("http://127.0.0.1:5001/predict", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                rank: document.getElementById("rank").value,
+                category: document.getElementById("category").value,
+                gender: document.getElementById("gender").value,
+              }),
+            });
+
+            const data = await response.json();
+            window.currentResults = data;
+
+            // TRANSITION UI: Add the class to body to move form to side
+            document.body.classList.add("results-active");
+
+            populateBranchFilter(data);
+            filterBar.classList.remove("hidden");
+            btn.disabled = false;
+            btn.innerText = "Update Search";
+
+            applyFilters();
+          } catch (err) {
+            alert("Backend Error: Check if app.py is running on Port 5001.");
+            btn.disabled = false;
+            btn.innerText = "Get Predictions";
+          }
+        });
+
+      function populateBranchFilter(data) {
+        const branchDropdown = document.getElementById("filterBranch");
+        const branches = [...new Set(data.map((item) => item.branch))].sort();
+        branchDropdown.innerHTML = '<option value="All">All Branches</option>';
+        branches.forEach((branch) => {
+          const option = document.createElement("option");
+          option.value = branch;
+          option.textContent = branch;
+          branchDropdown.appendChild(option);
+        });
+      }
+
+      function applyFilters() {
+        let keyword = document
+          .getElementById("searchKeyword")
+          .value.toLowerCase()
+          .trim();
+        const branchQuery = document.getElementById("filterBranch").value;
+        const statusQuery = document.getElementById("filterStatus").value;
+        const sortQuery = document.getElementById("sortBy").value;
+
+        if (shortcuts[keyword]) keyword = shortcuts[keyword];
+
+        let filtered = [...window.currentResults];
+
+        if (keyword)
+          filtered = filtered.filter((i) =>
+            i.institute.toLowerCase().includes(keyword),
+          );
+        if (branchQuery !== "All")
+          filtered = filtered.filter((i) => i.branch === branchQuery);
+        if (statusQuery !== "All")
+          filtered = filtered.filter((i) => i.status === statusQuery);
+
+        if (sortQuery === "nirf") filtered.sort((a, b) => a.nirf - b.nirf);
+        else if (sortQuery === "prob")
+          filtered.sort((a, b) => b.probability - a.probability);
+        else if (sortQuery === "alpha")
+          filtered.sort((a, b) => a.institute.localeCompare(b.institute));
+
+        document.getElementById("resultCount").innerText =
+          `${filtered.length} matches found`;
+        renderResults(filtered);
+      }
+
+      function renderResults(data) {
+        const container = document.getElementById("resultsList");
+        container.innerHTML = "";
+
+        data.forEach((item) => {
+          const card = `
+                    <div class="result-card status-${item.status.toLowerCase()}">
+                        <div>
+                            <span style="font-size: 0.65rem; color: var(--primary); font-weight: 800; background:#eff6ff; padding: 4px 8px; border-radius:6px;">NIRF #${item.nirf}</span>
+                            <h3 style="margin:10px 0 5px 0; font-size: 1.1rem;">${item.institute}</h3>
+                            <p style="margin:0; color:#475569; font-weight:500;">${item.branch}</p>
+                            <small style="color:#94a3b8;">${item.quota} | 2026 Prediction Accuracy: ${item.confidence}</small>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-size: 1.5rem; font-weight: 800; color: #1e293b;">${item.probability}%</div>
+                            <div class="status-badge">${item.status}</div>
+                        </div>
+                    </div>
+                `;
+          container.innerHTML += card;
+        });
+      }
+    </script>
+  </body>
+</html>

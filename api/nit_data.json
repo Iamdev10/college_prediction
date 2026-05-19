@@ -1,0 +1,8 @@
+{
+  "nit_trichy": { "name": "NIT Trichy", "nirf": 9, "placement": 9.8, "coding": 10, "campus": 9.5, "location": "Tamil Nadu", "cse_strength": 10, "ece_strength": 9.8 },
+  "nit_surathkal": { "name": "NIT Surathkal", "nirf": 12, "placement": 9.7, "coding": 9.8, "campus": 10, "location": "Karnataka", "cse_strength": 9.7, "ece_strength": 9.5 },
+  "nit_warangal": { "name": "NIT Warangal", "nirf": 21, "placement": 9.6, "coding": 9.9, "campus": 9.2, "location": "Telangana", "cse_strength": 9.8, "ece_strength": 9.4 },
+  "nit_calicut": { "name": "NIT Calicut", "nirf": 23, "placement": 9.2, "coding": 9.5, "campus": 9.4, "location": "Kerala", "cse_strength": 9.4, "ece_strength": 9.0 },
+  "mnit_jaipur": { "name": "MNIT Jaipur", "nirf": 37, "placement": 8.8, "coding": 8.9, "campus": 9.0, "location": "Rajasthan", "cse_strength": 8.9, "ece_strength": 8.5 },
+  "nit_kurukshetra": { "name": "NIT Kurukshetra", "nirf": 58, "placement": 8.7, "coding": 9.0, "campus": 8.5, "location": "Haryana", "cse_strength": 8.8, "ece_strength": 8.4 }
+}
