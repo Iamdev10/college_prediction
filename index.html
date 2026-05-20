@@ -325,7 +325,8 @@
           btn.innerText = "Analyzing...";
 
           try {
-            const response = await fetch("http://127.0.0.1:5001/predict", {
+            // CHANGED: Swapped absolute port loopback out for a relative web route mapping path
+            const response = await fetch("/predict", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
@@ -348,7 +349,9 @@
 
             applyFilters();
           } catch (err) {
-            alert("Backend Error: Check if app.py is running on Port 5001.");
+            alert(
+              "Application Error: Could not connect to the data pipeline engine.",
+            );
             btn.disabled = false;
             btn.innerText = "Get Predictions";
           }
@@ -404,20 +407,18 @@
         container.innerHTML = "";
 
         data.forEach((item) => {
-          const card = `
-                    <div class="result-card status-${item.status.toLowerCase()}">
-                        <div>
-                            <span style="font-size: 0.65rem; color: var(--primary); font-weight: 800; background:#eff6ff; padding: 4px 8px; border-radius:6px;">NIRF #${item.nirf}</span>
-                            <h3 style="margin:10px 0 5px 0; font-size: 1.1rem;">${item.institute}</h3>
-                            <p style="margin:0; color:#475569; font-weight:500;">${item.branch}</p>
-                            <small style="color:#94a3b8;">${item.quota} | 2026 Prediction Accuracy: ${item.confidence}</small>
-                        </div>
-                        <div style="text-align:right;">
-                            <div style="font-size: 1.5rem; font-weight: 800; color: #1e293b;">${item.probability}%</div>
-                            <div class="status-badge">${item.status}</div>
-                        </div>
-                    </div>
-                `;
+          const card = `<div class="result-card status-${item.status.toLowerCase()}">
+<div>
+<span style="font-size: 0.65rem; color: var(--primary); font-weight: 800; background:#eff6ff; padding: 4px 8px; border-radius:6px;">NIRF #${item.nirf}</span>
+<h3 style="margin:10px 0 5px 0; font-size: 1.1rem;">${item.institute}</h3>
+<p style="margin:0; color:#475569; font-weight:500;">${item.branch}</p>
+<small style="color:#94a3b8;">${item.quota} | 2026 Prediction Accuracy: ${item.confidence}</small>
+</div>
+<div style="text-align:right;">
+<div style="font-size: 1.5rem; font-weight: 800; color: #1e293b;">${item.probability}%</div>
+<div class="status-badge">${item.status}</div>
+</div>
+</div>`;
           container.innerHTML += card;
         });
       }

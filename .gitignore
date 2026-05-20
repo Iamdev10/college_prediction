@@ -1,2 +1,4 @@
-master_database_updated.csv
+venv/
+__pycache__/
+*.pyc
 .DS_Store

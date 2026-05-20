@@ -1,4 +1,5 @@
 {
+  "version": 2,
   "builds": [
     {
       "src": "api/app.py",
@@ -12,10 +13,6 @@
   "routes": [
     {
       "src": "/predict",
-      "dest": "api/app.py"
-    },
-    {
-      "src": "/chat",
       "dest": "api/app.py"
     },
     {
